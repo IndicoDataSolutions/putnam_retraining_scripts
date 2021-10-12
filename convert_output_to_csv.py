@@ -51,8 +51,8 @@ def main():
             output_dir, args.result_json_file.stem
         )
 
-    to_csv(sentence_rows, ["Sentence", "Label"], sentence_csv_filepath)
-    to_csv(header_rows, ["Header", "Label"], header_csv_filepath)
+    to_csv(sentence_rows, ["Sentences", "Label"], sentence_csv_filepath)
+    to_csv(header_rows, ["Headers", "Label"], header_csv_filepath)
 
 
 def open_result_file(result_json_file):
@@ -67,10 +67,14 @@ def convert_json_to_csv_rows(result_json):
     sentence_rows = []
     for result in results:
         if result["label_type"] == "Content":
-            sentence_row = {"text": result["text"], "target": result["label"]}
+            sentence = result["text"]
+            label = result["label"]
+            sentence_row = {"Sentences": sentence, "Label": label}
             sentence_rows.append(sentence_row)
         else:
-            header_row = {"Header": result["text"], "Target": result["label"]}
+            header = result["text"]
+            label = json.dumps([result["label"]])
+            header_row = {"Headers": header, "Label": label}
             header_rows.append(header_row)
     return sentence_rows, header_rows
 
